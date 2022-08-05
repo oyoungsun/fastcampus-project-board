@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
+import com.fastcampus.projectboard.domain.UserAccount;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,21 +25,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(JpaConfig.class)
 @DataJpaTest
 class JpaRepositoryTest {
-    //private final ArticleRepository articleRepository;
-    //private final ArticleCommentRepository articleCommentRepository;
-    @Autowired
+
     private ArticleRepository articleRepository; //19일 따로 추가
-    @Autowired
     private ArticleCommentRepository articleCommentRepository;
-/*
+    private final UserAccountRepository userAccountRepository;
+
     public JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
-            @Autowired ArticleCommentRepository articleCommentRepository
-    ){
+            @Autowired ArticleCommentRepository articleCommentRepository,
+            @Autowired UserAccountRepository userAccountRepository
+    ) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
+        this.userAccountRepository = userAccountRepository;
     }
- */
+
     @DisplayName("select 테스트")
     @Test
     void givenTestData_whenSelecting_thenWorksFine() {
@@ -57,8 +58,8 @@ class JpaRepositoryTest {
     void givenTestData_whenInserting_thenWorksFine() {
         // Given
         long previousCount = articleRepository.count();
-        Article article = Article.of("new article", "new content", "#spring");
-
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        Article article = Article.of(userAccount, "new article", "new content", "#spring");
         // When
         articleRepository.save(article);
 
