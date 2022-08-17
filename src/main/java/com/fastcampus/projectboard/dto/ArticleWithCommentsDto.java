@@ -11,7 +11,6 @@ public record ArticleWithCommentsDto(
         Long id,
         UserAccountDto userAccountDto,
         Set<ArticleCommentDto> articleCommentDtos,
-        //아까랑 다르게 댓글Set이 생김
         String title,
         String content,
         String hashtag,
@@ -28,7 +27,7 @@ public record ArticleWithCommentsDto(
         return new ArticleWithCommentsDto(
                 entity.getId(),
                 UserAccountDto.from(entity.getUserAccount()),
-                entity.getArticleComments().stream() //from(entity)에 연관된 댓글Dto들을 hashSet으로 묶음
+                entity.getArticleComments().stream()
                         .map(ArticleCommentDto::from)
                         .collect(Collectors.toCollection(LinkedHashSet::new)),
                 entity.getTitle(),
